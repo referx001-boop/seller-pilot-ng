@@ -4,7 +4,7 @@ const env = (k: string, d = '') => (process.env[k] ?? d).trim();
 
 export const config = {
   port: Number(env('PORT', '8787')),
-  publicUrl: env('PUBLIC_URL', 'http://localhost:5173').replace(/\/$/, ''),
+  publicUrl: (env('PUBLIC_URL') || (process.env.VERCEL_PROJECT_PRODUCTION_URL ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}` : 'http://localhost:5173')).replace(/\/$/, ''),
   shopName: env('SHOP_NAME', 'Ada Styles'),
   sellerEmail: env('SELLER_EMAIL'),
   ngnPerUsd: Number(env('NGN_PER_USD', '1550')) || 1550,

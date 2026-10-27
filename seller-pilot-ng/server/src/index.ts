@@ -12,7 +12,8 @@ import { PayPalError, toolkitToolNames, warmToolkit } from './paypal.js';
 import { seedSample } from './seed.js';
 
 load();
-const app = express();
+if (process.env.VERCEL && store.products().length === 0) seedSample();
+export const app = express();
 app.use(cors());
 app.use(express.json({ limit: '200kb' }));
 
@@ -87,7 +88,11 @@ app.use((err: any, _req: Request, res: Response, _next: NextFunction) => {
   res.status(status).json({ error: err.message, details: err instanceof PayPalError ? err.details : undefined });
 });
 
-app.listen(config.port, () => {
-  if (paypalMode() !== 'mock') warmToolkit().then(() => console.log('PayPal Agent Toolkit loaded')).catch((e) => console.warn('Agent Toolkit failed to load', e.message));
-  console.log(`SellerPilot API on http://localhost:${config.port}  |  PayPal: ${paypalMode()}  |  AI: ${engineName()}`);
-});
+if (!process.env.VERCEL) {
+  app.listen(config.port, () => {
+    if (paypalMode() !== 'mock') warmToolkit().then(() => console.log('PayPal Agent Toolkit loaded')).catch((e) => console.warn('Agent Toolkit failed to load', e.message));
+    console.log(`SellerPilot API on http://localhost:${config.port}  |  PayPal: ${paypalMode()}  |  AI: ${engineName()}`);
+  });
+}
+
+export default app;

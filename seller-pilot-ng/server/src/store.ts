@@ -5,7 +5,7 @@ import type { Invoice, Order, Product } from './types.js';
 
 interface DB { products: Product[]; orders: Order[]; invoices: Invoice[] }
 
-const file = path.resolve(process.env.DB_FILE || 'data/db.json');
+const file = path.resolve(process.env.DB_FILE || (process.env.VERCEL ? '/tmp/sellerpilot-db.json' : 'data/db.json'));
 let db: DB = { products: [], orders: [], invoices: [] };
 
 export function load() {

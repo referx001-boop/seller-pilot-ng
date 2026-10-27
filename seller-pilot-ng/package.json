@@ -12,7 +12,8 @@
     "build": "tsc -p tsconfig.server.json --noEmit && tsc -p web/tsconfig.json --noEmit && vite build",
     "start": "NODE_ENV=production tsx server/src/index.ts",
     "test": "tsx --test server/test/*.test.ts",
-    "smoke:paypal": "tsx scripts/paypal-smoke.ts"
+    "smoke:paypal": "tsx scripts/paypal-smoke.ts",
+    "build:api": "esbuild server/src/index.ts --bundle --platform=node --format=esm --target=node18 --packages=external --outfile=api/index.mjs"
   },
   "engines": {
     "node": ">=18.18"
@@ -40,6 +41,7 @@
     "puppeteer-core": "^25.16.0",
     "tsx": "^4.23.15",
     "typescript": "^7.0.2",
-    "vite": "^8.3.5"
+    "vite": "^8.3.5",
+    "esbuild": "^0.25.0"
   }
 }
